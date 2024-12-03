@@ -1,7 +1,5 @@
 import sqlite3
 
-
-
 #creates the database
 def create_db():
     #create table users in users database
