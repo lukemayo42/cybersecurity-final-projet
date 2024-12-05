@@ -6,11 +6,21 @@ def run_sql(query, params):
     try:
         conn = sqlite3.connect('users.db')
         cursor = conn.cursor()
+
+  
+        
+        # all other queries
         if params:
             cursor.execute(query, params)
         else:
             cursor.execute(query)
+
         conn.commit()
+        #is it a select statement?
+        if query.strip().upper().startswith("SELECT"):
+            result = cursor.fetchall()
+            return result
+
     except sqlite3.Error as e:
         print(f"exception: {e}")
         rtn_flag = False

@@ -7,52 +7,73 @@ from setup import run_sql
 
 
 app = Flask(__name__)
+app.secret_key = "not_so_secret_key" # for session
 
+# global varaible to keep track of login attemps
+login_attempts = 0
+@app.before_request
+def setup_counter():
+    global counter
 
 
 @app.route('/', methods = ['POST', 'GET'])
 def login():
+    global login_attempts
     if request.method == 'POST':
         # login attempt
-        if 'submit' in request.form: 
-            # check to see if the username is in the database
-            # if the user is in the database, check if the password is correct
+        if 'submit' in request.form:
+            login_attempts += 1 
+            print(login_attempts)
+            if login_attempts >= 3:
+                return render_template('login-limit.html')
+            
+            assert('username' in request.form)
+            # get form data
+            username = request.form.get('username')
+            password = request.form.get('password')
+            print(username)
+            print(password)
 
-                # if username and password are correct
-                    # go to index.html
-                # else
-                    # return to login.html with message saying that password is incorrect
-            #else
-                #return to login.html saying that username is not in the database:
-            print("submit")
-            # check to see if the username is in the database
+            # check to see if the username  is in the database
+            query = '''SELECT password, access_level FROM users WHERE username = ?'''
+            params = (username,)
+            data = run_sql(query, params)
+            print(data)
             # if the user is in the database, check if the password is correct
-
+            if len(data) > 0:
+                #hash the password with the salt from the password in the database
+                print(data[0][0])
+                salt = data[0][0][:40]  
+                stored_hash = data[0][0][40:] 
+                hashable = salt + password  # concatenate hash and plain text
+                hashable = hashable.encode('utf-8')  # convert to bytes
+                this_hash = hashlib.sha1(hashable).hexdigest()  # hash and digest
+                
                 # if username and password are correct
-                    # go to index.html
-                # else
-                    # return to login.html with message saying that password is incorrect
-            #else
-                #return to login.html saying that username is not in the database
-            return render_template('index.html')
+                # go to index.html
+                if this_hash == stored_hash:
+                    return render_template('index.html')
+                else:
+                    return render_template('login.html', message = "incorrect password", login_attempts = login_attempts)
+            else:
+                return render_template("login.html", message = "username not found", login_attempts = login_attempts)
+ 
         # register new user
         elif 'register1' in request.form:
-            return render_template('login.html')
+            return render_template('login.html', login_attempts = login_attempts)
         
         else:
-            print("register!!!")
             return redirect('/register')
             
     else:
-        return render_template("login.html")
+        return render_template("login.html", login_attempts = login_attempts)
     
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
     if request.method == 'POST':
         if 'register1' in request.form:
             # register button press
-            print("redirecting")
-            
+            assert('username' in request.form)
             # get the form data
             username:str = request.form.get('username')
             print(username)
@@ -81,7 +102,7 @@ def register():
             password_hash = salt + this_hash
             # add to the database
             # use parameterized queries to protect from sql injection
-            query = " INSERT INTO users(username, password, access_level) values (?, ?, ?)"
+            query = ''' INSERT INTO users(username, password, access_level) values (?, ?, ?) '''
             params = (username, password_hash, "technical")
             if run_sql(query, params):
                 return render_template("login.html", message = "registered new user")
@@ -104,7 +125,6 @@ def index():
 
 
 if __name__ == "__main__":
-
     app.run(debug=True)
 
 
