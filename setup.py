@@ -12,7 +12,7 @@ def run_sql(query, params):
             cursor.execute(query)
         conn.commit()
     except sqlite3.Error as e:
-        print("exception: {e}")
+        print(f"exception: {e}")
         rtn_flag = False
     finally:
         if cursor is not None:
@@ -29,4 +29,4 @@ if __name__ == "__main__":
                     username TEXT,
                     password TEXT,
                     access_level TEXT
-                    )''')
+                    )''', params = ())

@@ -18,7 +18,7 @@ setup the database:
 ``` 
 python setup.py
 ```
-run the flask app
+run the flask app:
 ```
 python app.py
 ```
