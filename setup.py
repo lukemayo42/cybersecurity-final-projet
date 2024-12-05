@@ -1,26 +1,34 @@
 import sqlite3
 
-#creates the database
-def create_db():
-    #create table users in users database
+
+
+def run_sql(query, params):
+    # run parameterized query to protect from sql injection
+    rtn_flag = True
     try:
         conn = sqlite3.connect('users.db')
-        c = conn.cursor()
-        c.execute('''CREATE TABLE users
-                    (
-                    username text,
-                    password text,
-                    access_level text
-                    )''')
+        cursor = conn.cursor()
+        if params:
+            cursor.execute(query, params)
+        else:
+            cursor.execute(query)
         conn.commit()
-        return True
-    except BaseException:
-        print("exception")
-        return False
+    except sqlite3.Error as e:
+        print("exception: {e}")
+        rtn_flag = False
     finally:
-        if c is not None:
-            c.close()
+        if cursor is not None:
+            cursor.close()
         if conn is not None:
             conn.close()
+    return rtn_flag
 
-create_db()  
+if __name__ == "__main__":
+    #create the database
+    run_sql(query = '''CREATE TABLE users
+                    (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT,
+                    password TEXT,
+                    access_level TEXT
+                    )''')

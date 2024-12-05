@@ -4,17 +4,21 @@
 ## instructions to run
 in the terminal run: 
 ```
-python -m venv venv
+virtualenv venv
 ```
-activate flask (windows):
+then:
 ```
 .\venv\Scripts\activate
 ```
-install required packages:
+install flask:
 ```
-pip install -r requirements.txt
+pip install flask
 ```
 setup the database:
 ``` 
 python setup.py
+```
+run the flask app
+```
+python app.py
 ```
