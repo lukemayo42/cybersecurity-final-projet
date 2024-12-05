@@ -1,7 +1,5 @@
 import sqlite3
 
-
-
 def run_sql(query, params):
     # run parameterized query to protect from sql injection
     rtn_flag = True
