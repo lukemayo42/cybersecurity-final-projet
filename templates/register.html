@@ -4,9 +4,12 @@
 {% endblock%}
 
 {% block body %}
-<form action = "/" method = 'POST'>
+<form action = "/register" method = 'POST'>
     <fieldset>
         <legend>Register a new Account</legend>
+        {% if message %}
+        <p>{{message}}</p>
+        {% endif%}
         <p>
             <label for="username">username:</label>
             <input type="text" id="username" name="username">
@@ -23,6 +26,12 @@
         <p>
             <input type="submit" id="register1" name = "register1" value = "Register">
         </p>
+        <p>
+            <input type="submit" id = "strong-password" name = "strong-password" value="Generate Strong Password">
+        </p>
+        {% if strong_password %}
+        <p>{{strong_password}}</p>
+        {%endif%}
     </fieldset>
 </form>
 
