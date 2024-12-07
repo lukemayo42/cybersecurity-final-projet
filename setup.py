@@ -1,14 +1,14 @@
 import sqlite3
 
+DATABASE = 'users.db'
+
 def run_sql(query, params):
     # run parameterized query to protect from sql injection
     rtn_flag = True
     try:
-        conn = sqlite3.connect('users.db')
+        conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
 
-  
-        
         # all other queries
         if params:
             cursor.execute(query, params)

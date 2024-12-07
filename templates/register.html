@@ -8,7 +8,7 @@
     <fieldset>
         <legend>Register a new Account</legend>
         {% if message %}
-        <p>{{message}}</p>
+        <p class = "error">{{message}}</p>
         {% endif%}
         <p>
             <label for="username">username:</label>
@@ -17,11 +17,11 @@
         <!-- TODO: change to password field when finished -->
         <p>
             <label for="password">password:</label>
-            <input type="text" id="password" name="password">
+            <input type="password" id="password" name="password">
         </p>
         <p>
             <label for="confirm-password">confirm password:</label>
-            <input type="text" id="confirm-password" name="confirm-password">
+            <input type="password" id="confirm-password" name="confirm-password">
         </p>
         <p>
             <input type="submit" id="register1" name = "register1" value = "Register">

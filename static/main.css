@@ -1,0 +1,85 @@
+
+
+body{
+    margin: auto;
+    padding: 0% 10%;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    background-color:aliceblue;
+}
+
+nav a:link, nav a:visited{
+    background-color: navy;
+    color:aliceblue;
+    text-decoration: none;
+    padding:.5em;
+    
+}
+
+nav a:hover{
+    text-decoration: underline;
+}
+a:link, a:visited{
+    color:aliceblue;
+    text-decoration:none;
+    background-color:navy;
+}
+a:hover{
+    text-decoration:underline;
+}
+
+nav{
+    text-align:left;
+}
+header{
+    text-align:center;
+}
+
+fieldset{
+    background-color: rgb(167, 229, 231);
+    color:darkblue;
+    border:3px solid navy;
+    margin:auto;
+    width:60%;
+    font-family:'Courier New', Courier, monospace
+}
+legend{
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:1.1em;
+}
+
+input[type=submit]{
+    background-color:navy;
+    color:aliceblue;
+    border:none;
+    padding: .5em 1em;
+    cursor:pointer;
+    font-family: 'Courier New', Courier, monospace;
+}
+h1{
+    text-align:center;
+    color:navy;
+}
+label{
+    display:block;
+}
+textarea{
+    display:block;
+    border:none;
+    background-color: aliceblue;
+    font-family: 'Courier New', Courier, monospace;
+}
+input[type='text'], input[type='number'], input[type='email'], input[type='password']{
+    border:none; 
+    background-color:aliceblue;
+    font-family:'Courier New', Courier, monospace;
+
+}
+
+
+
+h2, h3{
+    color:navy;
+    text-align:left;
+}
+
+

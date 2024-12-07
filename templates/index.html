@@ -6,18 +6,22 @@
 
 {% block body %} 
 <h1>Departments</h1>
+<h3>Access Level: {{access_level}}</h3>
 <nav>
-    <a href = "department/Human-Resources">Human Resources</a>
-    <a href = "department/Engineering Documents">Engineering Documents</a>
-    <a href = "department/Marketing">Marketing</a>
-    <a href = "department/Accounting">Accounting</a>
-    <a href = "department/Software Development Documents">Software Development Documents</a>
-    <a href = "department/Full Stack Development">Full Stack Development</a>
-    <a href = "department/Information Technology">Information Technology</a>
-    <a href = "department/IT Helpdesk">IT Helpdesk</a>
-    <a href = "department/Management">Management</a>
+    {% if access_level == "technical" or access_level == "admin" %}
+    <a href = "/department/Engineering Documents/{{access_level}}">Engineering Documents</a>
+    <a href = "/department/Software Development Documents/{{access_level}}">Software Development Documents</a>
+    <a href = "/department/Full Stack Development/{{access_level}}">Full Stack Development</a>
+    <a href = "/department/Information Technology/{{access_level}}">Information Technology</a>
+    <a href = "/department/IT Helpdesk/{{access_level}}">IT Helpdesk</a>
+    {% endif %}
+    {% if access_level == "business" or access_level == "admin" %}
+    <a href = "/department/Human-Resources/{{access_level}}">Human Resources</a>
+    <a href = "/department/Marketing/{{access_level}}">Marketing</a>
+    <a href = "/department/Accounting/{{access_level}}">Accounting</a>
+    {% endif %}
+    {% if access_level == "admin" %}
+    <a href = "/department/Management/{{access_level}}">Management</a>
+    {% endif %}
 </nav>
-<div>
-    hello world
-</div>
 {% endblock %}

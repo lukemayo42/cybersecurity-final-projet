@@ -5,10 +5,10 @@ import string
 import hashlib
 from setup import run_sql
 
-
 app = Flask(__name__)
-app.secret_key = "not_so_secret_key" # for session
 
+LOGIN_LIMIT = 100000
+#LOGIN_LIMIT = 3
 # global varaible to keep track of login attemps
 login_attempts = 0
 @app.before_request
@@ -24,7 +24,7 @@ def login():
         if 'submit' in request.form:
             login_attempts += 1 
             print(login_attempts)
-            if login_attempts >= 3:
+            if login_attempts >= LOGIN_LIMIT:
                 return render_template('login-limit.html')
             
             assert('username' in request.form)
@@ -38,7 +38,6 @@ def login():
             query = '''SELECT password, access_level FROM users WHERE username = ?'''
             params = (username,)
             data = run_sql(query, params)
-            print(data)
             # if the user is in the database, check if the password is correct
             if len(data) > 0:
                 #hash the password with the salt from the password in the database
@@ -52,7 +51,7 @@ def login():
                 # if username and password are correct
                 # go to index.html
                 if this_hash == stored_hash:
-                    return render_template('index.html')
+                    return render_template(f'index.html', access_level = data[0][1])
                 else:
                     return render_template('login.html', message = "incorrect password", login_attempts = login_attempts)
             else:
@@ -72,26 +71,25 @@ def login():
 def register():
     if request.method == 'POST':
         if 'register1' in request.form:
-            # register button press
-            assert('username' in request.form)
+
             # get the form data
             username:str = request.form.get('username')
-            print(username)
             password:str = request.form.get('password')
             c_pass:str = request.form.get('confirm-password')
 
+            # check that it meets requirements
             if password != c_pass:
                 return render_template("register.html", message = "passwords do not match")
             
-            # check that it meets requirements
             if len(password) < 8 or len(password) > 25:
                 return render_template('register.html', message = "password must be in between 8 and 25 characters long")
             
             #regex to check if it characters, numbers, and special characters
-            has_letter = bool(re.search(r'[a-zA-Z]', password))
+            has_lowercase = bool(re.search(r'[a-z]', password))
+            has_uppercase = bool(re.search(r'[a-z]', password))
             has_number = has_number = bool(re.search(r'\d', password))
             has_special_char = bool(re.search(r'[!@#$%^&*(),.?":{}|<>]', password))
-            if not (has_letter and has_number and has_special_char):
+            if not (has_lowercase and has_uppercase and has_number and has_special_char):
                 return render_template("register.html", message = "password must contain at least 1 letter, 1 number, and one special character")
             
             # hash and salt the password to be stored
@@ -100,6 +98,7 @@ def register():
             hashable = hashable.encode('utf-8')
             this_hash = hashlib.sha1(hashable).hexdigest()
             password_hash = salt + this_hash
+
             # add to the database
             # use parameterized queries to protect from sql injection
             query = ''' INSERT INTO users(username, password, access_level) values (?, ?, ?) '''
@@ -115,13 +114,15 @@ def register():
             return render_template("register.html", strong_password = strong_password)
     return render_template("register.html")
 
-@app.route('/department/<department>')
-def department(department):
-    return render_template('department.html', department = department)
+@app.route('/department/<department>/<access_level>')
+def department(department, access_level):
+    return render_template('department.html', department = department, access_level = access_level)
 
-@app.route("/index")
-def index():
-    return render_template("index.html")
+
+
+@app.route("/index/<access_level>")
+def index(access_level):
+    return render_template("index.html", access_level = access_level)
 
 
 if __name__ == "__main__":
