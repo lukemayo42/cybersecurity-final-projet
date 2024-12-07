@@ -82,4 +82,10 @@ h2, h3{
     text-align:left;
 }
 
+.error{
+    color:rgb(210, 12, 12);
+    font-weight:bolder;
+    
+}
+
 

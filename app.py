@@ -7,8 +7,8 @@ from setup import run_sql
 
 app = Flask(__name__)
 
-LOGIN_LIMIT = 100000
-#LOGIN_LIMIT = 3
+
+LOGIN_LIMIT = 3
 # global varaible to keep track of login attemps
 login_attempts = 0
 @app.before_request

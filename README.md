@@ -1,4 +1,4 @@
-# cybersecurity final project Lucas Mayo
+# Cybersecurity Final Project Lucas Mayo
 ## Description
 The first screen you will see is the login screen.  If a user does not have an account, press the register button and they will go to a register screen. This screen will prompt the user to enter a username, password, and confirm password. The passwords must match in order to register. The passwords must also meet the follwing requirements:
 - length in between 8 and 25 characters
@@ -19,8 +19,8 @@ The database is secured against SQL Injection by using paramterized queries. Pas
 
 ## Testing Instructions
 
-You can test the program by following the setup instructions below, and inputing both valid and invalid data to the forms. Running setup.py will create an empty databse called `users.db`. You will need to register a user in order to login. I have provided a test database called `testing.db`. This database contains users with all three access levels. `technical`, `business`, and `admin`, to test the other roles in the system. To use this database simply change the `DATABASE` constant in setup.py from `'users.db'` to `'testing.db'`. Do not rerun setup.py.
-These users have the following login information in testing.db:   
+You can test the program by following the setup instructions below, and inputing both valid and invalid data to the forms. Running setup.py will create an empty databse called `users.db`. You will need to register a user in order to login. I have provided a test database called `testing.db`. This database contains users with all three access levels. `technical`, `business`, and `admin`, to test the other roles in the system. To use this database simply change the `DATABASE` constant in `setup.p`y from `'users.db'` to `'testing.db'`. Do not rerun `setup.py`.
+These users have the following login information in `testing.db`:   
 1. username: ljmayo
     - password: ILikeSkiing42!
     - access level: technical
@@ -30,6 +30,8 @@ These users have the following login information in testing.db:
 3. username: FinanceGuy
     - password: wal|str33tw0lF
     - access level: business
+
+If you would like more then three login attempts, you can change the constant  `LOGIN_LIMIT` at the top of  `app.py` to a higher number than three. 
 
 ## Setup Instructions
 in the terminal run: 
